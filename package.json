@@ -4,7 +4,7 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "build": "vite build && cp -r node_modules/@excalidraw/excalidraw/dist/prod/fonts dist/fonts && cp -r node_modules/@excalidraw/excalidraw/dist/prod/*.png assets/ 2>/dev/null; cp node_modules/@excalidraw/excalidraw/dist/prod/favicon.ico assets/icon.ico 2>/dev/null; true",
+    "build": "vite build && find node_modules/@excalidraw/excalidraw -type d -name fonts | xargs -I{} cp -r {} dist/fonts || true",
     "dist": "npm run build && electron-builder"
   },
   "build": {
