@@ -11,7 +11,7 @@
     "appId": "com.excalidraw.app",
     "productName": "Excalidraw",
     "artifactName": "Excalidraw.${ext}",
-    "icon": "assets/icon.ico",
+    "icon": "assets/icon.png",
     "files": [
       "dist/**/*",
       "electron/**/*",
@@ -19,11 +19,11 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.png"
     },
     "mac": {
       "target": "dmg",
-      "icon": "assets/icon.icns"
+      "icon": "assets/icon.png"
     },
     "linux": {
       "target": "AppImage",
