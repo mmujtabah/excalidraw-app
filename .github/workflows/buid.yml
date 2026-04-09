@@ -1,0 +1,56 @@
+name: Build Excalidraw App
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: curl -L "https://raw.githubusercontent.com/excalidraw/excalidraw/master/public/favicon.ico" -o assets/icon.ico
+      - run: npm run build
+        shell: bash
+      - run: npx electron-builder --win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Excalidraw-Windows
+          path: dist/Excalidraw-Setup.exe
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: curl -L "https://raw.githubusercontent.com/excalidraw/excalidraw/master/public/favicon.ico" -o assets/icon.ico
+      - run: npm run build
+      - run: npx electron-builder --mac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Excalidraw-Mac
+          path: dist/*.dmg
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: curl -L "https://raw.githubusercontent.com/excalidraw/excalidraw/master/public/favicon.ico" -o assets/icon.ico
+      - run: npm run build
+      - run: npx electron-builder --linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Excalidraw-Linux
+          path: dist/*.AppImage

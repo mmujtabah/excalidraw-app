@@ -1,0 +1,46 @@
+{
+  "name": "excalidraw-app",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "vite build && cp -r node_modules/@excalidraw/excalidraw/dist/prod/fonts dist/fonts && cp -r node_modules/@excalidraw/excalidraw/dist/prod/*.png assets/ 2>/dev/null; cp node_modules/@excalidraw/excalidraw/dist/prod/favicon.ico assets/icon.ico 2>/dev/null; true",
+    "dist": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "com.excalidraw.app",
+    "productName": "Excalidraw",
+    "artifactName": "Excalidraw.${ext}",
+    "icon": "assets/icon.ico",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.17.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "concurrently": "^8.0.0",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0",
+    "vite": "^5.0.0",
+    "wait-on": "^7.0.0"
+  }
+}
