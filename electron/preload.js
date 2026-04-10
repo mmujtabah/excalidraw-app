@@ -1,9 +1,5 @@
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge } = require("electron");
 
-contextBridge.exposeInMainWorld("electronAPI", {
-  saveFile: (data) => ipcRenderer.invoke("save-file", data),
-  saveImage: (base64, ext) => ipcRenderer.invoke("save-image", base64, ext),
-  openFile: () => ipcRenderer.invoke("open-file"),
-  onTriggerSave: (callback) => ipcRenderer.on("trigger-save", callback),
-  onTriggerOpen: (callback) => ipcRenderer.on("trigger-open", callback),
+contextBridge.exposeInMainWorld("electron", {
+  isDesktop: true,
 });

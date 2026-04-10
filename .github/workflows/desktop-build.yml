@@ -1,0 +1,65 @@
+name: Desktop Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "electron/**"
+      - "excalidraw-app/**"
+      - "packages/**"
+      - "package.json"
+      - "yarn.lock"
+      - ".github/workflows/desktop-build.yml"
+  workflow_dispatch:
+
+jobs:
+  build-desktop:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npx -y yarn@1.22.22 install --frozen-lockfile
+
+      - name: Build web app
+        run: npx -y yarn@1.22.22 build:app
+
+      - name: Build Windows installer
+        if: runner.os == 'Windows'
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npx -y electron-builder --win --publish never
+
+      - name: Build macOS dmg
+        if: runner.os == 'macOS'
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npx -y electron-builder --mac --publish never
+
+      - name: Build Linux AppImage
+        if: runner.os == 'Linux'
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npx -y electron-builder --linux AppImage --publish never
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            release/*.exe
+            release/*.dmg
+            release/*.AppImage
+          if-no-files-found: warn
