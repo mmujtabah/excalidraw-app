@@ -3,6 +3,15 @@ name: Build Excalidraw App
 on:
   push:
     branches: [main]
+    paths:
+      - "src/**"
+      - "electron/**"
+      - "assets/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.js"
+      - ".github/workflows/build.yml"
   workflow_dispatch:
 
 jobs:
