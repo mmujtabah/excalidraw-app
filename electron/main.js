@@ -18,16 +18,18 @@ function createWindow() {
     win.loadURL("http://localhost:5173");
   }
 
-  // intercept Ctrl+S
   win.webContents.on("before-input-event", (event, input) => {
     if (input.control && input.key === "s") {
       win.webContents.send("trigger-save");
       event.preventDefault();
     }
+    if (input.control && input.key === "o") {
+      win.webContents.send("trigger-open");
+      event.preventDefault();
+    }
   });
 }
 
-// save file dialog
 ipcMain.handle("save-file", async (event, data) => {
   const { canceled, filePath } = await dialog.showSaveDialog({
     title: "Save Drawing",
@@ -41,7 +43,20 @@ ipcMain.handle("save-file", async (event, data) => {
   return null;
 });
 
-// open file dialog
+ipcMain.handle("save-image", async (event, base64, ext) => {
+  const { canceled, filePath } = await dialog.showSaveDialog({
+    title: "Export Image",
+    defaultPath: `drawing.${ext}`,
+    filters: [{ name: "Image", extensions: [ext] }],
+  });
+  if (!canceled && filePath) {
+    const buffer = Buffer.from(base64.split(",")[1], "base64");
+    fs.writeFileSync(filePath, buffer);
+    return filePath;
+  }
+  return null;
+});
+
 ipcMain.handle("open-file", async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     title: "Open Drawing",

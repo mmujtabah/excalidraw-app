@@ -2,6 +2,8 @@
   "name": "excalidraw-app",
   "version": "1.0.0",
   "main": "electron/main.js",
+  "description": "Excalidraw desktop app",
+  "author": "mmujtabah",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "build": "vite build && find node_modules/@excalidraw/excalidraw -type d -name fonts | xargs -I{} cp -r {} dist/fonts || true",
@@ -12,6 +14,7 @@
     "productName": "Excalidraw",
     "artifactName": "Excalidraw.${ext}",
     "icon": "assets/icon.png",
+    "publish": "never",
     "files": [
       "dist/**/*",
       "electron/**/*",
