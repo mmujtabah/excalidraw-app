@@ -40,6 +40,15 @@ export const AppWelcomeScreen: React.FC<{
         {t("welcomeScreen.app.center_heading_line2")}
         <br />
         {t("welcomeScreen.app.center_heading_line3")}
+        <br />
+        App built by{" "}
+        <a
+          href="https://github.com/mmujtabah"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          github.com/mmujtabah
+        </a>
       </>
     );
   }
