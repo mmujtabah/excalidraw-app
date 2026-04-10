@@ -1,6 +1,9 @@
 {
   "private": true,
   "name": "excalidraw-monorepo",
+  "version": "1.0.0",
+  "description": "Excalidraw desktop application built from full Excalidraw source",
+  "author": "mmujtabah",
   "main": "electron/main.js",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
