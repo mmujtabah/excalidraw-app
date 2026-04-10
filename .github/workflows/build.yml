@@ -14,7 +14,16 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: curl -L "https://github.com/excalidraw/excalidraw/raw/master/public/og-image-2.png" -o assets/icon.png
+      - run: npm install --save-dev sharp
+      - name: Generate icon
+        run: |
+          node -e "
+          const sharp = require('sharp');
+          const size = 512;
+          const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='\${size}' height='\${size}'><rect width='\${size}' height='\${size}' rx='100' fill='#6965db'/><text x='50%' y='54%' font-size='280' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial'>✏</text></svg>\`;
+          sharp(Buffer.from(svg)).png().toFile('assets/icon.png');
+          "
+        shell: bash
       - run: npm run build
         shell: bash
       - run: npx electron-builder --win
@@ -31,7 +40,15 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: curl -L "https://github.com/excalidraw/excalidraw/raw/master/public/og-image-2.png" -o assets/icon.png
+      - run: npm install --save-dev sharp
+      - name: Generate icon
+        run: |
+          node -e "
+          const sharp = require('sharp');
+          const size = 512;
+          const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='\${size}' height='\${size}'><rect width='\${size}' height='\${size}' rx='100' fill='#6965db'/><text x='50%' y='54%' font-size='280' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial'>✏</text></svg>\`;
+          sharp(Buffer.from(svg)).png().toFile('assets/icon.png');
+          "
       - run: npm run build
       - run: npx electron-builder --mac
       - uses: actions/upload-artifact@v4
@@ -47,7 +64,15 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: curl -L "https://github.com/excalidraw/excalidraw/raw/master/public/og-image-2.png" -o assets/icon.png
+      - run: npm install --save-dev sharp
+      - name: Generate icon
+        run: |
+          node -e "
+          const sharp = require('sharp');
+          const size = 512;
+          const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='\${size}' height='\${size}'><rect width='\${size}' height='\${size}' rx='100' fill='#6965db'/><text x='50%' y='54%' font-size='280' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial'>✏</text></svg>\`;
+          sharp(Buffer.from(svg)).png().toFile('assets/icon.png');
+          "
       - run: npm run build
       - run: npx electron-builder --linux
       - uses: actions/upload-artifact@v4
