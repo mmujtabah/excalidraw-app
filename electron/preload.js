@@ -5,4 +5,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
   saveImage: (base64, ext) => ipcRenderer.invoke("save-image", base64, ext),
   openFile: () => ipcRenderer.invoke("open-file"),
   onTriggerSave: (callback) => ipcRenderer.on("trigger-save", callback),
+  onTriggerOpen: (callback) => ipcRenderer.on("trigger-open", callback),
 });

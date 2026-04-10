@@ -1,4 +1,4 @@
-import { Excalidraw, exportToBlob } from "@excalidraw/excalidraw";
+import { Excalidraw } from "@excalidraw/excalidraw";
 import { useRef, useEffect } from "react";
 
 export default function App() {
@@ -7,48 +7,47 @@ export default function App() {
   useEffect(() => {
     if (!window.electronAPI) return;
 
-    window.electronAPI.onTriggerSave(async () => {
+    const handleSave = async () => {
       if (!apiRef.current) return;
       const elements = apiRef.current.getSceneElements();
       const appState = apiRef.current.getAppState();
-      const data = JSON.stringify({ elements, appState }, null, 2);
+      const data = JSON.stringify({
+        type: "excalidraw",
+        version: 2,
+        source: "excalidraw-app",
+        elements,
+        appState: {
+          viewBackgroundColor: appState.viewBackgroundColor,
+          gridSize: appState.gridSize,
+        },
+      });
       await window.electronAPI.saveFile(data);
-    });
-  }, []);
-
-  const handleExportPNG = async () => {
-    if (!apiRef.current || !window.electronAPI) return;
-    const elements = apiRef.current.getSceneElements();
-    const appState = apiRef.current.getAppState();
-    const blob = await exportToBlob({ elements, appState, mimeType: "image/png" });
-    const reader = new FileReader();
-    reader.onload = async () => {
-      await window.electronAPI.saveImage(reader.result, "png");
     };
-    reader.readAsDataURL(blob);
-  };
+
+    const handleOpen = async () => {
+      if (!apiRef.current) return;
+      const data = await window.electronAPI.openFile();
+      if (!data) return;
+      const parsed = JSON.parse(data);
+      apiRef.current.updateScene({
+        elements: parsed.elements,
+        appState: parsed.appState,
+      });
+    };
+
+    window.electronAPI.onTriggerSave(handleSave);
+    window.electronAPI.onTriggerOpen(handleOpen);
+
+    // cleanup to prevent duplicate listeners
+    return () => {
+      window.electronAPI.removeSaveListener(handleSave);
+      window.electronAPI.removeOpenListener(handleOpen);
+    };
+  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <Excalidraw
-        excalidrawAPI={(api) => (apiRef.current = api)}
-        renderTopRightUI={() => (
-          <button
-            onClick={handleExportPNG}
-            style={{
-              padding: "6px 12px",
-              background: "#6965db",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontSize: "13px",
-            }}
-          >
-            Export PNG
-          </button>
-        )}
-      />
+      <Excalidraw excalidrawAPI={(api) => (apiRef.current = api)} />
     </div>
   );
 }
