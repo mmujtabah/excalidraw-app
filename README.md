@@ -1,0 +1,91 @@
+# Excalidraw Desktop App
+
+A cross-platform desktop application built with [Electron](https://www.electronjs.org/) and [Excalidraw](https://excalidraw.com/), giving you the full Excalidraw drawing experience as a native desktop app.
+
+## Features
+
+- 🖊️ Full Excalidraw drawing canvas
+- 💾 Save drawings to `.excalidraw` files (`Ctrl+S`)
+- 📂 Open existing `.excalidraw` files (`Ctrl+O`)
+- 🖼️ Export drawings as images
+- 📦 Distributable builds for Windows, macOS, and Linux
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) v18 or later
+- npm v9 or later
+
+## Getting Started
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Run in development mode
+
+Starts the Vite dev server and launches Electron simultaneously:
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+Compiles the React app with Vite:
+
+```bash
+npm run build
+```
+
+### Package as a distributable
+
+Builds the app and packages it as a platform-specific installer:
+
+```bash
+npm run dist
+```
+
+| Platform | Output format |
+|----------|--------------|
+| Windows  | NSIS installer (`.exe`) |
+| macOS    | Disk image (`.dmg`) |
+| Linux    | AppImage (`.AppImage`) |
+
+Packaged files are placed in the `dist/` directory.
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+S` | Save drawing to a `.excalidraw` file |
+| `Ctrl+O` | Open a `.excalidraw` file |
+
+## Project Structure
+
+```
+excalidraw-app/
+├── assets/          # App icons
+├── electron/
+│   ├── main.js      # Electron main process (window, IPC handlers)
+│   └── preload.js   # Context bridge exposing APIs to the renderer
+├── src/
+│   ├── App.jsx      # Main React component wrapping Excalidraw
+│   └── main.jsx     # React entry point
+├── index.html       # HTML shell
+├── vite.config.js   # Vite configuration
+└── package.json
+```
+
+## Tech Stack
+
+- **[Excalidraw](https://github.com/excalidraw/excalidraw)** – whiteboard / diagramming library
+- **[React](https://react.dev/)** – UI framework
+- **[Vite](https://vitejs.dev/)** – frontend build tool
+- **[Electron](https://www.electronjs.org/)** – desktop app shell
+- **[electron-builder](https://www.electron.build/)** – packaging & distribution
+
+## License
+
+MIT
