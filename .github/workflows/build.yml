@@ -26,11 +26,11 @@ jobs:
         shell: bash
       - run: npm run build
         shell: bash
-      - run: npx electron-builder --win
+      - run: npx electron-builder --win --publish never
       - uses: actions/upload-artifact@v4
         with:
           name: Excalidraw-Windows
-          path: dist/Excalidraw-Setup.exe
+          path: dist/Excalidraw.exe
 
   build-mac:
     runs-on: macos-latest
@@ -50,7 +50,7 @@ jobs:
           sharp(Buffer.from(svg)).png().toFile('assets/icon.png');
           "
       - run: npm run build
-      - run: npx electron-builder --mac
+      - run: npx electron-builder --mac --publish never
       - uses: actions/upload-artifact@v4
         with:
           name: Excalidraw-Mac
@@ -74,7 +74,7 @@ jobs:
           sharp(Buffer.from(svg)).png().toFile('assets/icon.png');
           "
       - run: npm run build
-      - run: npx electron-builder --linux
+      - run: npx electron-builder --linux --publish never
       - uses: actions/upload-artifact@v4
         with:
           name: Excalidraw-Linux
